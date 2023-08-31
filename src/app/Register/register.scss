@@ -1,0 +1,63 @@
+@import "../vars.scss";
+.registerSec {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 30px;
+  background-color: $primary_black;
+  overflow: hidden;
+}
+
+.registerSec__form {
+  flex-direction: column;
+  justify-content: center;
+  display: flex;
+  height: 100%;
+  width: 300px;
+  gap: 20px;
+}
+
+.arrowLeft {
+  align-self: flex-start;
+  background-color: $gray_color;
+  border-radius: 50%;
+  width: 25px;
+  padding: 5px;
+  height: 25px;
+  cursor: pointer;
+}
+
+.registerSec__label {
+  flex-direction: column;
+  color: $white_color;
+  display: flex;
+  gap: 7px;
+  font-size: 13px;
+  letter-spacing: 1px;
+}
+
+.registerSec__input {
+  border: 1px solid $gray_color;
+  color: $white_color;
+  border-radius: 5px;
+  padding: 10px;
+  background: transparent;
+}
+.errorMsg {
+  color: $main_color;
+  font-size: 13px;
+}
+
+.registerSec__btn {
+  background-color: $main_color;
+  border: none;
+  padding: 15px;
+  border-radius: 20px;
+  color: $white_color;
+}
+
+body {
+  background-color: $primary_black;
+}
