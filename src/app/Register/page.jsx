@@ -1,149 +1,189 @@
 'use client'
-import React, {  useState } from "react";
-import "./register.scss";
-import { AiOutlineArrowLeft } from "react-icons/ai";
-import { useNavigate } from "react-router";
-import { motion } from "framer-motion";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState } from 'react'
+import './register.scss'
+import { AiOutlineArrowLeft } from 'react-icons/ai'
+import { motion } from 'framer-motion'
+import { useForm } from 'react-hook-form'
+import { useRouter } from 'next/navigation'
+import { useSingInMutation } from '@/redux/services/userService'
+import { notify } from '@/services/notify'
+import { useDispatch, useSelector } from 'react-redux'
+import { setUser } from '@/redux/features/usersSlice'
 
-
-const minPass = /^.{6,}$/;
-const upperPass = /[A-Z]/;
-const specialPass = /[\W_]/;
+const minPass = /^.{6,}$/
+const upperPass = /[A-Z]/
+const specialPass = /[\W_]/
 const page = () => {
-  const [passWord, setPassWord] = useState("");
-  const [errorPass, setErrorPass] = useState("");
-  const validatePass = (value) => {
-    if (!minPass.test(value)) {
-      setErrorPass("Debe contener mínimo 6 dígitos");
-    } else if (!upperPass.test(value)) {
-      setErrorPass("También debe contener mínimo una mayúscula");
-    } else if (!specialPass.test(value)) {
-      setErrorPass("También debe contener un carácter especial");
-    } else {
-      setErrorPass("");
-      setPassWord(value);
-    }
-  };
+  const [singin, { data, isLoading }] = useSingInMutation()
+  const { user } = useSelector((state) => state.user)
+  const [errorPass, setErrorPass] = useState('')
+  const [passWord, setPassWord] = useState('')
+  const dispatch = useDispatch()
+  const { back, push } = useRouter()
 
-  const validatePasswords = (passWordConf) => {
-    if (passWord !== passWordConf) {
-      setError("passwordConf", { message: "Las contraseñas no coinciden" });
-    } else {
-      setError("passwordConf", { message: "" });
-    }
-  };
+  const error = {}
 
   const {
-    register,
-    handleSubmit,
     formState: { errors },
+    handleSubmit,
     setError,
-  } = useForm();
- 
+    register,
+    clearErrors,
+  } = useForm()
+
+  const validatePass = (value) => {
+    if (!minPass.test(value)) {
+      setErrorPass('Debe contener mínimo 6 dígitos')
+    } else if (!upperPass.test(value)) {
+      setErrorPass('debe contener mínimo una mayúscula')
+    } else if (!specialPass.test(value)) {
+      setErrorPass('debe contener un carácter especial')
+    } else {
+      setErrorPass('')
+      setPassWord(value)
+    }
+  }
+
+  const validatePasswords = (passwordConf) => {
+    if (passWord !== passwordConf) {
+      setError('passwordConf', {
+        type: 'validate',
+        message: 'Las contraseñas no coinciden',
+      })
+    } else {
+      clearErrors('passwordConf') // Limpia el error si las contraseñas coinciden
+    }
+  }
+
+  useEffect(() => {
+    if (errors.status === true) {
+      notify(error.message, '#d80416', '#d80416')
+    }
+    if (!user.token) {
+      if (data?.token) {
+        dispatch(setUser(data))
+        push('/home')
+      }
+    }
+  }, [isLoading, data])
+
   const onSubmit = (data) => {
-    dispatch(createUserWithEmail(data));
-  };
- 
+    singin(data)
+  }
 
   return (
     <motion.section
-      initial={{ x: "100%" }}
-      transition={{ duration: 1, ease: "easeIn" }}
+      initial={{ x: '100%' }}
+      transition={{ duration: 1, ease: 'easeIn' }}
       exit={{ x: window.innerWidth }}
-      animate={{ x: "0%" }}
-      className="registerSec"
+      animate={{ x: '0%' }}
+      className='registerSec'
     >
-      <AiOutlineArrowLeft onClick={() => navigate(-1)} className="arrowLeft" />
-      <form onSubmit={handleSubmit(onSubmit)} className="registerSec__form">
-        <label htmlFor="" className="registerSec__label">
+      <AiOutlineArrowLeft onClick={() => back()} className='arrowLeft' />
+      <form onSubmit={handleSubmit(onSubmit)} className='registerSec__form'>
+        <label htmlFor='' className='registerSec__label'>
           <input
-            {...register("email", { required: "El email es requerido" })}
-            type="email"
-            className="registerSec__input"
-            placeholder="Email"
+            {...register('email', { required: 'El email es requerido' })}
+            className='registerSec__input'
+            type='email'
+            placeholder='Email'
           />
           Email
           {errors.email ? (
-            <span className="errorMsg">{errors.email.message}</span>
+            <span className='errorMsg'>{errors.email.message}</span>
           ) : (
             <></>
           )}
         </label>
 
-        <label htmlFor="" className="registerSec__label">
+        <label htmlFor='' className='registerSec__label'>
           <input
-            {...register("location", { required: "La Ciudad es requerida" })}
-            type="text"
-            className="registerSec__input"
-            placeholder="Ciudad"
+            {...register('city', { required: 'La Ciudad es requerida' })}
+            className='registerSec__input'
+            placeholder='Ciudad'
+            type='text'
           />
           Ciudad
           {errors.location ? (
-            <span className="errorMsg">{errors.location.message}</span>
+            <span className='errorMsg'>{errors.location.message}</span>
           ) : (
             <></>
           )}
         </label>
 
-        <label htmlFor="" className="registerSec__label">
+        <label htmlFor='' className='registerSec__label'>
           <input
-            {...register("name", { required: "El nombre es requerido" })}
-            type="text"
-            className="registerSec__input"
-            placeholder="Nombre de usuario"
+            {...register('name', { required: 'El nombre es requerido' })}
+            placeholder='Nombre de usuario'
+            className='registerSec__input'
+            type='text'
           />
           Nombre de usuario
           {errors.name ? (
-            <span className="errorMsg">{errors.name.message}</span>
+            <span className='errorMsg'>{errors.name.message}</span>
           ) : (
             <></>
           )}
         </label>
 
-        <label htmlFor="" className="registerSec__label">
+        <label htmlFor='' className='registerSec__label'>
+          <select
+            {...register('type', { required: 'El rol es requerido' })}
+            className='registerSec__input'
+          >
+            <option value='comp'>Establecimiento</option>
+            <option value='art'>Artista</option>
+          </select>
+          Rol
+          {errors.name ? (
+            <span className='errorMsg'>{errors.name.message}</span>
+          ) : (
+            <></>
+          )}
+        </label>
+
+        <label htmlFor='' className='registerSec__label'>
           <input
             onInput={(e) => validatePass(e.target.value)}
-            type="password"
-            className="registerSec__input"
-            placeholder="Contraseña"
+            className='registerSec__input'
+            placeholder='Contraseña'
+            type='password'
           />
           Contraseña
           {errors.password ? (
-            <span className="errorMsg">{errors.password.message}</span>
+            <span className='errorMsg'>{errors.password.message}</span>
           ) : (
             <></>
           )}
-          {errorPass !== "" ? (
-            <span className="errorMsg">{errorPass}</span>
+          {errorPass !== '' ? (
+            <span className='errorMsg'>{errorPass}</span>
           ) : (
-            ""
+            ''
           )}
         </label>
 
-        <label htmlFor="" className="registerSec__label">
+        <label htmlFor='' className='registerSec__label'>
           <input
-            {...register("passwordConf", { required: "" })}
-            type="password"
-            className="registerSec__input"
-            placeholder="Confirmar contraseña"
+            {...register('password', { required: 'se requiere contraseña' })}
             onInput={(e) => validatePasswords(e.target.value)}
+            placeholder='Confirmar contraseña'
+            className='registerSec__input'
+            type='password'
           />
           Confirmar contraseña
           {errors.passwordConf ? (
-            <span className="errorMsg">{errors.passwordConf.message}</span>
+            <span className='errorMsg'>{errors.passwordConf.message}</span>
           ) : (
             <></>
           )}
         </label>
 
-        <button type="submit" className="registerSec__btn">
+        <button type='submit' className='registerSec__btn'>
           CREAR CUENTA
         </button>
       </form>
-     
     </motion.section>
-  );
-};
+  )
+}
 
-export default page;
+export default page

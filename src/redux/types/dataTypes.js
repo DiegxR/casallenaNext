@@ -1,0 +1,6 @@
+export const dataTypes = {
+  LOAD_OBRAS: "LOAD_OBRAS",
+  LOAD_TEATROS: "LOAD_TEATROS",
+  LOAD_FILTERS: "LOAD_FILTERS",
+  UPDATE_OBRA: "UPDATE_OBRA",
+};
