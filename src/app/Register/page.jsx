@@ -14,7 +14,7 @@ const minPass = /^.{6,}$/
 const upperPass = /[A-Z]/
 const specialPass = /[\W_]/
 const page = () => {
-  const [singin, { data, isLoading }] = useSingInMutation()
+  const [singin, { data, isError, isLoading }] = useSingInMutation()
   const { user } = useSelector((state) => state.user)
   const [errorPass, setErrorPass] = useState('')
   const [passWord, setPassWord] = useState('')
@@ -22,7 +22,14 @@ const page = () => {
   const { back, push } = useRouter()
 
   const error = {}
-
+  useEffect(() => {
+   if(isError){
+    notify('Error al cargar los datos', "black", "red")
+  }
+  console.log(isError)
+  console.log(data)
+  }, [isError, data])
+  
   const {
     formState: { errors },
     handleSubmit,
@@ -61,6 +68,7 @@ const page = () => {
     }
     if (!user.token) {
       if (data?.token) {
+        notify("Usuario creado con exito, bienvenido", 'black', '#d80416')
         dispatch(setUser(data))
         push('/home')
       }
@@ -69,13 +77,14 @@ const page = () => {
 
   const onSubmit = (data) => {
     singin(data)
+    console.log(data)
   }
 
   return (
     <motion.section
       initial={{ x: '100%' }}
       transition={{ duration: 1, ease: 'easeIn' }}
-      exit={{ x: window.innerWidth }}
+      exit={{ x: "100%" }}
       animate={{ x: '0%' }}
       className='registerSec'
     >

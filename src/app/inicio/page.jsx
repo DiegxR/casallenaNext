@@ -16,7 +16,7 @@ import { setUser } from '@/redux/features/usersSlice'
 import logo from '../../assets/logo.svg'
 
 const SignInPage = () => {
-  const [login, { data, isLoading }] = useLoginMutation()
+  const [login, { data, isLoading, isError }] = useLoginMutation()
   const { user } = useSelector((state) => state.user)
   const [showPass, setShowPass] = useState(false)
   const dispatch = useDispatch()
@@ -31,16 +31,21 @@ const SignInPage = () => {
   } = useForm()
 
   useEffect(() => {
-    if (error.status === true) {
-      notify(error.message, '#d80416', '#d80416')
-    }
     if (!user.token) {
       if (data?.token) {
+        console.log(data, user)
         dispatch(setUser(data))
-        router.push('/home')
+        router.push('/home/events')
+        notify(`Bienvenido ${user.name}`, 'green', 'black')
       }
     }
-  }, [isLoading, data])
+    if(isLoading){
+      notify('cargando...', 'blue', 'gray')
+    }
+    if(isError){
+      notify('Error al iniciar sesión, intentelo de nuevo', '#d80416', '#d80416')
+    }
+  }, [isLoading, data, isError])
 
   const onSubmit = (data) => {
     console.log('🚀 ~ file: page.jsx:45 ~ onSubmit ~ data:', data)
