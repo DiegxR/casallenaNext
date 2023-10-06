@@ -1,25 +1,26 @@
 'use client'
 import React, { useState } from 'react'
-import Layout from '../Layout'
 import './profile.scss'
-import { FaUserCircle } from "react-icons/fa";
-import { useSelector } from 'react-redux';
-import EventCreate from '@/components/forms/EventCreate';
+import { FaUserCircle } from 'react-icons/fa'
+import { useSelector } from 'react-redux'
+import EventCreate from '@/components/forms/EventCreate'
 
 const profile = () => {
-  const {user} = useSelector(store => store.user)
+  const { user } = useSelector((store) => store.user)
   const [modal, setModal] = useState(false)
   return (
-    <Layout>
-      <section className='content'>
+    <>
+      <section className='content__profile'>
         <div className='user'>
-          <FaUserCircle className='img'/>
+          <FaUserCircle className='img' />
           <h1>{user.name}</h1>
         </div>
-        <button onClick={()=> setModal(true)} className='buttonCreate'>Crear Evento</button>
+        <button onClick={() => setModal(true)} className='buttonCreate'>
+          Crear Evento
+        </button>
       </section>
-      <EventCreate state={modal} setState={setModal}/>
-    </Layout>
+      <EventCreate state={modal} setState={setModal} />
+    </>
   )
 }
 

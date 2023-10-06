@@ -1,12 +1,10 @@
-'use client'
 import NavBar from '@/components/navBar/NavBar'
-import React from 'react'
 
 export default function Layout({ children }) {
-    return (
-      <>
-        <main>{children}</main>
-        <NavBar />
-      </>
-    )
-  }
+  return (
+    <main style={{ height: '100vh' }}>
+      {children}
+      <NavBar />
+    </main>
+  )
+}

@@ -23,13 +23,13 @@ const page = () => {
 
   const error = {}
   useEffect(() => {
-   if(isError){
-    notify('Error al cargar los datos', "black", "red")
-  }
-  console.log(isError)
-  console.log(data)
+    if (isError) {
+      notify('Error al cargar los datos', 'black', 'red')
+    }
+    console.log(isError)
+    console.log(data)
   }, [isError, data])
-  
+
   const {
     formState: { errors },
     handleSubmit,
@@ -68,8 +68,8 @@ const page = () => {
     }
     if (!user.token) {
       if (data?.token) {
-        notify("Usuario creado con exito, bienvenido", 'black', '#d80416')
-        dispatch(setUser(data))
+        notify('Usuario creado con exito, bienvenido', 'black', '#d80416')
+        dispatch(setUser(data.newUser))
         push('/home')
       }
     }
@@ -84,7 +84,7 @@ const page = () => {
     <motion.section
       initial={{ x: '100%' }}
       transition={{ duration: 1, ease: 'easeIn' }}
-      exit={{ x: "100%" }}
+      exit={{ x: '100%' }}
       animate={{ x: '0%' }}
       className='registerSec'
     >

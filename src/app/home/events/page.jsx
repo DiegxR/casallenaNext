@@ -1,16 +1,11 @@
-'use client'
-import React from 'react'
-import Layout from '../Layout'
 import './events.scss'
+const fechtEvent = (second) => {}
 const events = () => {
+  const event = fechtEvent()
   return (
-    <Layout>
-      <div className='content'>
-       <h1>
-        Events
-        </h1> 
-      </div>
-    </Layout>
+    <div className='content__event'>
+      <h1>Events</h1>
+    </div>
   )
 }
 

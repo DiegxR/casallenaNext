@@ -34,16 +34,20 @@ const SignInPage = () => {
     if (!user.token) {
       if (data?.token) {
         console.log(data, user)
-        dispatch(setUser(data))
+        dispatch(setUser(data.user))
         router.push('/home/events')
         notify(`Bienvenido ${user.name}`, 'green', 'black')
       }
     }
-    if(isLoading){
+    if (isLoading) {
       notify('cargando...', 'blue', 'gray')
     }
-    if(isError){
-      notify('Error al iniciar sesión, intentelo de nuevo', '#d80416', '#d80416')
+    if (isError) {
+      notify(
+        'Error al iniciar sesión, intentelo de nuevo',
+        '#d80416',
+        '#d80416'
+      )
     }
   }, [isLoading, data, isError])
 

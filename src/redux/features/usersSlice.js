@@ -16,11 +16,11 @@ export const userSlice = createSlice({
   reducers: {
     setUser: (state, { payload }) => {
       console.log('🚀 ~ file: usersSlice.js:17 ~ payload:', payload)
-       state.user.email = payload?.user.email
-      state.user.name = payload?.user.name
-      state.user.city = payload?.user.city
-      state.user.type = payload?.user.type
-      state.user.token = payload?.token 
+      state.user.email = payload?.email
+      state.user.name = payload?.name
+      state.user.city = payload?.city
+      state.user.type = payload?.type
+      state.user.token = payload?.token
     },
   },
 })
